@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+:root{
+  /* Variables for easy color changes */
+  --bg-color: #252727;
+  --main-color: #e27d5f;
+  --secondary-color: #85cdca;
+  --main-under: #e8a87c;
+  --accent: #c38d9d;
+  --deep: #40b3a2;
+
+  height: 100%;
+  background-color: var(--bg-color);
+  color-scheme: dark;
+}
