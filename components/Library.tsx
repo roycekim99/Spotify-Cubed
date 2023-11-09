@@ -1,10 +1,24 @@
 "use client";
 import { TbPlaylist } from "react-icons/tb";
 import { AiOutlinePlus } from "react-icons/ai";
+import useAuthModal from "@/Hooks/useAuthModal";
+import useUploadModal from "@/Hooks/useUploadModal";
+import { useUser } from "@/Hooks/useUser";
 
 const Library = () => {
+  const authModal = useAuthModal();
+  const uploadModal = useUploadModal();
+  const { user } = useUser();
+
   const onClick = () => {
-    // TODO: handle on click
+    // cehck if user is logged in
+    if (!user) {
+      return authModal.onOpen();
+    }
+
+    // Todo: check for subscription lock
+
+    return uploadModal.onOpen();
   };
 
   // Display list of songs
@@ -27,10 +41,7 @@ const Library = () => {
         gap-x-2"
         >
           {/* Playlist Icon */}
-          <TbPlaylist
-            className="text-neutral-400"
-            size={35}
-          />
+          <TbPlaylist className="text-neutral-400" size={35} />
           {/* Text */}
           <p
             className="

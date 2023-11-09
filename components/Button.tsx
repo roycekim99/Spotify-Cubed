@@ -4,18 +4,9 @@ import { twMerge } from "tailwind-merge";
 interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
 
-const Button = forwardRef<
-  HTMLButtonElement,
-  ButtonProps
->(
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
-    {
-      className,
-      children,
-      disabled,
-      type = "button",
-      ...props
-    },
+    { className, children, disabled, type = "button", ...props },
     ref
   ) => {
     return (
@@ -25,7 +16,7 @@ const Button = forwardRef<
           `
             w-full
             rounded-full
-            bg-green-500
+            bg-[#ee833c]
             kborder
             border-transparent
             px-3

@@ -1,7 +1,12 @@
+import getSongs from "@/actions/getSongs";
 import Header from "@/components/Header";
 import ListItem from "@/components/ListItem";
 
-export default function Home() {
+export const revalidate = 0;
+
+export default async function Home() {
+  const songs = await getSongs();
+
   return (
     <div
       className="
@@ -47,7 +52,12 @@ export default function Home() {
             Newest songs
           </h1>
         </div>
-        <div>[List of songs here]</div>
+        <div>
+          [songs here!]
+          {/* {songs.map((song) => (
+            <div>{song.title}</div>
+          ))} */}
+        </div>
       </div>
     </div>
   );

@@ -2,27 +2,40 @@
 
 import { useRouter } from "next/navigation";
 import { twMerge } from "tailwind-merge";
-import {
-  RxCaretLeft,
-  RxCaretRight,
-} from "react-icons/rx";
 import { HiHome } from "react-icons/hi";
 import { BiSearch } from "react-icons/bi";
+import { FaUserAlt } from "react-icons/fa";
+import { RxCaretLeft, RxCaretRight } from "react-icons/rx";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import toast from "react-hot-toast/headless";
+
+import useAuthModal from "@/Hooks/useAuthModal";
+import { useUser } from "@/Hooks/useUser";
 import Button from "./Button";
+import { supabase } from "@supabase/auth-ui-shared";
 
 interface HeaderProps {
   children: React.ReactNode;
   className?: string;
 }
 
-const Header: React.FC<HeaderProps> = ({
-  children,
-  className,
-}) => {
+const Header: React.FC<HeaderProps> = ({ children, className }) => {
+  const authModal = useAuthModal();
   const router = useRouter();
 
-  const handleLogout = () => {
-    // TODO: loggout
+  const supabaseClient = useSupabaseClient();
+  const { user } = useUser();
+
+  const handleLogout = async () => {
+    const { error } = await supabaseClient.auth.signOut();
+
+    // TODO: Reset any playing songs
+    router.refresh();
+
+    // TODO: toast the message (toast not working)
+    if (error) {
+      toast.error(error.message);
+    } else toast("Success!");
   };
 
   return (
@@ -31,7 +44,7 @@ const Header: React.FC<HeaderProps> = ({
         `
         h-fit
         bg-gradient-to-b
-        from-emerald-800
+        from-[#c05e21]
         p-6
     `,
         className
@@ -93,10 +106,7 @@ const Header: React.FC<HeaderProps> = ({
           hoverLopacity-75
           transition"
           >
-            <HiHome
-              className="text-black"
-              size={30}
-            />
+            <HiHome className="text-black" size={30} />
           </button>
           <button
             className="
@@ -109,10 +119,7 @@ const Header: React.FC<HeaderProps> = ({
           hoverLopacity-75
           transition"
           >
-            <BiSearch
-              className="text-black"
-              size={30}
-            />
+            <BiSearch className="text-black" size={30} />
           </button>
         </div>
         <div
@@ -122,31 +129,49 @@ const Header: React.FC<HeaderProps> = ({
           items-center
           gap-x-4"
         >
-          <>
-            <div>
+          {/* Buttons for user authentication */}
+          {user ? (
+            <div className="flex gap-x-4 items-center">
               <Button
-                onClick={() => {}}
-                className="
+                onClick={handleLogout}
+                className="bg-[#cec9bb00] text-white ps-4 py-2"
+              >
+                Logout
+              </Button>
+              <Button
+                onClick={() => router.push("/account")}
+                className="bg-white"
+              >
+                <FaUserAlt />
+              </Button>
+            </div>
+          ) : (
+            <>
+              <div>
+                <Button
+                  onClick={authModal.onOpen}
+                  className="
                   bg-transparent
                   text-neutral-300
                   font-medium"
-              >
-                Sign up
-              </Button>
-            </div>
-            <div>
-              <Button
-                onClick={() => {}}
-                className="
+                >
+                  Sign up
+                </Button>
+              </div>
+              <div>
+                <Button
+                  onClick={authModal.onOpen}
+                  className="
                   bg-white
                   px-6
                   py-2   
                 "
-              >
-                Login
-              </Button>
-            </div>
-          </>
+                >
+                  Login
+                </Button>
+              </div>
+            </>
+          )}
         </div>
       </div>
       {children}
