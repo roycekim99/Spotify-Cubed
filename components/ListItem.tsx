@@ -10,11 +10,7 @@ interface ListItemProps {
   href: string;
 }
 
-const ListItem: React.FC<ListItemProps> = ({
-  image,
-  name,
-  href,
-}) => {
+const ListItem: React.FC<ListItemProps> = ({ image, name, href }) => {
   const router = useRouter();
 
   const onClick = () => {
@@ -51,9 +47,7 @@ const ListItem: React.FC<ListItemProps> = ({
           alt="Image"
         />
       </div>
-      <p className="font-medium truncate py-5">
-        {name}
-      </p>
+      <p className="font-medium truncate py-5">{name}</p>
       <div
         className="
         absolute
@@ -63,10 +57,10 @@ const ListItem: React.FC<ListItemProps> = ({
         flex
         items-center
         justify-center
-        bg-green-500
+        bg-[#B56C3B]
         p-4
         drop-shadow-md
-        right-5
+        right-2
         group-hover:opacity-100
         hover:scale-110"
       >
