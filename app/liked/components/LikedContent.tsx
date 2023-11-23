@@ -1,5 +1,6 @@
 "use client";
 
+import useOnPlay from "@/Hooks/useOnPlay";
 import { useUser } from "@/Hooks/useUser";
 import LikeButton from "@/components/LikeButton";
 import MediaItem from "@/components/MediaItem";
@@ -12,6 +13,8 @@ interface LikedContentProp {
 }
 
 const LikedContent: React.FC<LikedContentProp> = ({ songs }) => {
+  const onPlay = useOnPlay(songs);
+
   const router = useRouter();
   const { isLoading, user } = useUser();
 
@@ -47,7 +50,10 @@ const LikedContent: React.FC<LikedContentProp> = ({ songs }) => {
           className="flex items-center gap-x-4 w-full"
         >
           <div className="flex-1">
-            <MediaItem onClick={() => {}} data={song} />
+            <MediaItem
+              onClick={(id: string) => onPlay(id)}
+              data={song}
+            />
           </div>
           <LikeButton songId={song.id} />
         </div>
