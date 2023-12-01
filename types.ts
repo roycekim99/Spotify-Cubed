@@ -27,12 +27,12 @@ export interface Product{
     name?: string;
     description?: string;
     image?: string;
-    metadat?: Stripe.Metadata;
+    metadata?: Stripe.Metadata;
 }
 
 export interface Price{
     id: string;
-    product?: string;
+    product_id?: string;
     active?: boolean;
     description?: string;
     unit_amount?: number;
