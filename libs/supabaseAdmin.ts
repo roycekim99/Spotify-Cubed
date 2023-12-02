@@ -68,11 +68,14 @@ const createOrRetrieveCustomer = async ({
         }
       };
     if (email) customerData.email = email;
+
     const customer = await stripe.customers.create(customerData);
+
     const { error: supabaseError } = await supabaseAdmin
       .from('customers')
       .insert([{ id: uuid, stripe_customer_id: customer.id }]);
     if (supabaseError) throw supabaseError;
+
     console.log(`New customer created and inserted for ${uuid}.`);
     return customer.id;
   }
@@ -87,7 +90,7 @@ const copyBillingDetailsToCustomer = async (
   const customer = payment_method.customer as string;
   const { name, phone, address } = payment_method.billing_details;
   if (!name || !phone || !address) return;
-  //@ts-ignore
+  // @ts-ignore
   await stripe.customers.update(customer, { name, phone, address });
   const { error } = await supabaseAdmin
     .from('users')
