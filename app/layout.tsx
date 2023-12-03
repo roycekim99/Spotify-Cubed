@@ -9,6 +9,7 @@ import UserProvider from "@/providers/UserProvider";
 import ModalProvider from "@/providers/ModalProvider";
 import ToasterProvider from "@/providers/ToasterProvider";
 import getSongsByUserID from "@/actions/getSongsByUserID";
+import getActiveProductsWithPrices from "@/actions/getActiveProductsWithPrices";
 
 const font = Genos({
   subsets: ["latin"],
@@ -28,6 +29,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const userSongs = await getSongsByUserID();
+  const products = await getActiveProductsWithPrices();
 
   return (
     <html lang="en">
@@ -35,7 +37,7 @@ export default async function RootLayout({
         <ToasterProvider />
         <SupabaseProvider>
           <UserProvider>
-            <ModalProvider />
+            <ModalProvider products={products} />
             <Sidebar songs={userSongs}>{children}</Sidebar>
             <Player />
           </UserProvider>
