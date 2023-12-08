@@ -13,6 +13,7 @@ import useAuthModal from "@/Hooks/useAuthModal";
 import { useUser } from "@/Hooks/useUser";
 import Button from "./Button";
 import { supabase } from "@supabase/auth-ui-shared";
+import usePlayer from "@/Hooks/usePlayer";
 
 interface HeaderProps {
   children: React.ReactNode;
@@ -20,6 +21,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ children, className }) => {
+  const player = usePlayer();
   const authModal = useAuthModal();
   const router = useRouter();
 
@@ -28,11 +30,9 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
 
   const handleLogout = async () => {
     const { error } = await supabaseClient.auth.signOut();
-
-    // TODO: Reset any playing songs
+    player.reset();
     router.refresh();
 
-    // TODO: toast the message (toast not working)
     if (error) {
       toast.error(error.message);
     } else toast("Success!");
